@@ -8,7 +8,7 @@ class Channel:
     """Класс для YouTube-канала"""
 
     def __init__(self, channel_id: str) -> None:
-        """Конструктор класса с атрибутами для данных канала."""
+        """Инициализирует экземпляр класса Channel."""
         self.__channel_id = channel_id
         self.channel = self.get_service().channels().list(id=channel_id, part='snippet,statistics').execute()
         self.title = self.channel['items'][0]['snippet']['title']
@@ -19,8 +19,11 @@ class Channel:
         self.view_count = int(self.channel['items'][0]['statistics']['viewCount'])
 
     def __str__(self):
+        """Строковое представление объекта
+        (название канала и URL-адрес)"""
         return f'{self.title} ({self.url})'
 
+    # Реализация сложения, вычитания и сравнения количества подписчиков каналов
     def __add__(self, other):
         if type(other) == Channel:
             return self.subscriber_count + other.subscriber_count
