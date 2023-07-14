@@ -8,7 +8,7 @@ class Channel:
     """Класс для YouTube-канала"""
 
     def __init__(self, channel_id: str) -> None:
-        """Инициализирует экземпляр класса Channel."""
+        """Инициализирует экземпляр класса Channel"""
         self.__channel_id = channel_id
         self.channel = self.get_service().channels().list(id=channel_id, part='snippet,statistics').execute()
         self.title = self.channel['items'][0]['snippet']['title']
@@ -62,16 +62,16 @@ class Channel:
 
     @property
     def channel_id(self):
-        """Геттер идентификатора YouTube-канала."""
+        """Геттер идентификатора YouTube-канала"""
         return self.__channel_id
 
     def print_info(self) -> None:
-        """Выводит в консоль информацию о канале."""
+        """Выводит в консоль информацию о канале"""
         print(json.dumps(self.channel, indent=2, ensure_ascii=False))
 
     @classmethod
     def get_service(cls):
-        """Возвращает объект службы YouTube API для выполнения запросов."""
+        """Возвращает объект службы YouTube API для выполнения запросов"""
         api_key: str = os.getenv('YouTube_API')
         return build('youtube', 'v3', developerKey=api_key)
 
