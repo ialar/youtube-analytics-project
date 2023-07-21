@@ -2,16 +2,17 @@ from datetime import timedelta
 
 import isodate
 
-from src.channel import Channel
+from src.base_yt_api_service import BaseYouTubeService
 
 
-class PlayList:
+class PlayList(BaseYouTubeService):
     """Класс для плейлиста"""
 
     def __init__(self, playlist_id: str):
         """Инициализирует экземпляр класса PlayList"""
+        super().__init__()
         self.__playlist_id = playlist_id
-        self.playlist_videos = Channel.get_service().playlistItems(). \
+        self.playlist_videos = self.api.playlistItems(). \
             list(playlistId=playlist_id, part='snippet,contentDetails,id,status', maxResults=50).execute()
         self.title = self.playlist_videos['items'][0]['snippet']['title'].split(".")[0]
         self.url = f'https://www.youtube.com/playlist?list={playlist_id}'
@@ -26,7 +27,7 @@ class PlayList:
     def get_playlist_data(self):
         """Собирает данные о плейлисте с помощью YouTube API"""
         video_ids = [video['contentDetails']['videoId'] for video in self.playlist_videos['items']]
-        videos = Channel.get_service().videos(). \
+        videos = self.api.videos(). \
             list(part='contentDetails,statistics', id=','.join(video_ids)).execute()
         self.__videos = videos['items']
 
